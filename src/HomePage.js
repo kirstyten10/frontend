@@ -1,24 +1,37 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import SearchPage from './SearchPage';
 
-function HomePage({ navigate }) {
-    const [searchQuery, setSearchQuery] = useState("");
+const HomePage = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
 
-    const handleSearch = () => {
-        navigate("search");
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchTerm.trim() !== '') {
+            setIsSearching(true);
+        }
     };
 
     return (
         <div>
-            <h1>Welcome to Library Tracker</h1>
-            <input
-                type="text"
-                placeholder="Search for books..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button onClick={handleSearch}>Search</button>
+            {isSearching ? (
+                <SearchPage initialQuery={searchTerm} />
+            ) : (
+                <>
+                    <h1>Welcome to the Library Tracker!</h1>
+                    <form onSubmit={handleSearch}>
+                        <input
+                            type="text"
+                            placeholder="Search for books..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button type="submit">Search</button>
+                    </form>
+                </>
+            )}
         </div>
     );
-}
+};
 
 export default HomePage;
