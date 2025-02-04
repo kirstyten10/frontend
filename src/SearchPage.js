@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const SearchPage = ({ initialQuery }) => {
+const SearchPage = ({ initialQuery, navigate }) => {
     const [searchTerm, setSearchTerm] = useState(initialQuery);
     const [searchQuery, setSearchQuery] = useState(initialQuery);
     const [books, setBooks] = useState([]);
@@ -31,6 +31,10 @@ const SearchPage = ({ initialQuery }) => {
         setSearchQuery(searchTerm);
     };
 
+    const handleBookClick = (book) => {
+        navigate('book-details', book);
+    };
+
     return (
         <div>
             <h1>Search</h1>
@@ -47,18 +51,25 @@ const SearchPage = ({ initialQuery }) => {
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
 
-            <ul>
+            <div className="book-container">
                 {books.length > 0 ? (
                     books.map((book) => (
-                        <li key={book.book_id}>
-                            <h3>{book.title}</h3>
-                            <p>{book.authors}</p>
-                        </li>
+                        <div key={book.book_id} className="book-item">
+                            {book.imageUrl && (
+                                <img
+                                    src={book.imageUrl}
+                                    alt={book.title}
+                                    className="book-image"
+                                    onClick={() => handleBookClick(book)}
+                                />
+                            )}
+                            <div className="book-title">{book.title}</div>
+                        </div>
                     ))
                 ) : (
                     <p>No books found</p>
                 )}
-            </ul>
+            </div>
         </div>
     );
 };

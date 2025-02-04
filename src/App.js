@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import HomePage from "./HomePage";
 import SearchPage from "./SearchPage";
-import { importBooks } from "./api/api";
+import BookDetailsPage from './BookDetails';
+import './App.css';
 
 function App() {
-  const [page, setPage] = useState("home");
-
-
-  const navigate = (path) => {
-    setPage(path);
+  const [currentPage, setCurrentPage] = useState('home');
+  const [selectedBook, setSelectedBook] = useState(null);
+  const navigate = (path, book = null) => {
+    setCurrentPage(path);
+    if (book) {
+      setSelectedBook(book);
+    }
   };
 
   return (
     <div>
-      {page === "home" && <HomePage navigate={navigate} />}
-      {page === "search" && <SearchPage navigate={navigate} />}
+      {currentPage === 'home' && <HomePage navigate={navigate} />}
+      {currentPage === 'search' && <SearchPage navigate={navigate} />}
+      {currentPage === 'book-details' && selectedBook && (
+        <BookDetailsPage book={selectedBook} navigate={navigate} />
+      )}
     </div>
   );
 }
