@@ -1,19 +1,20 @@
 import React, { useState } from "react";
+import HomePage from "./HomePage";
+import SearchPage from "./SearchPage";
 import { importBooks } from "./api/api";
 
 function App() {
-  const [message, setMessage] = useState("");
+  const [page, setPage] = useState("home");
 
-  const handleImportBooks = async () => {
-    const result = await importBooks();
-    setMessage(result);
+
+  const navigate = (path) => {
+    setPage(path);
   };
 
   return (
-    <div className="App">
-      <h1>Library Tracker</h1>
-      <button onClick={handleImportBooks}>Import Books</button>
-      <p>{message}</p>
+    <div>
+      {page === "home" && <HomePage navigate={navigate} />}
+      {page === "search" && <SearchPage navigate={navigate} />}
     </div>
   );
 }
