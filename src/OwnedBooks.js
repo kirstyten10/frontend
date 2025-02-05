@@ -11,13 +11,27 @@ const OwnedBooks = () => {
         setOwnedBooks(storedBooks);
     }, []);
 
-    const handleBackToHome = () => {
-        navigate('/');
-    };
-
     const handleBookClick = (bookId) => {
         console.log("Navigating to book with ID:", bookId);
         navigate(`/book-details/${bookId}`);
+    };
+
+    const handleAddToOwnedBooks = (book) => {
+        const updatedBooks = [...ownedBooks, book];
+        setOwnedBooks(updatedBooks);
+        localStorage.setItem('ownedBooks', JSON.stringify(updatedBooks));
+        alert(`${book.title} successfully added to your owned books`);
+    };
+
+    const handleRemoveFromOwnedBooks = (book) => {
+        const updatedBooks = ownedBooks.filter((b) => b.book_id !== book.book_id);
+        setOwnedBooks(updatedBooks);
+        localStorage.setItem('ownedBooks', JSON.stringify(updatedBooks));
+        alert(`${book.title} has been removed from your owned books`);
+    };
+
+    const isBookOwned = (book) => {
+        return ownedBooks.some((b) => b.book_id === book.book_id);
     };
 
     return (
@@ -34,6 +48,11 @@ const OwnedBooks = () => {
                                 onClick={() => handleBookClick(book.book_id)}
                             />
                             <div className="book-title">{book.title}</div>
+                            {isBookOwned(book) ? (
+                                <button onClick={() => handleRemoveFromOwnedBooks(book)}>Remove From Owned</button>
+                            ) : (
+                                <button onClick={() => handleAddToOwnedBooks(book)}>Add to Owned</button>
+                            )}
                         </div>
                     ))
                 ) : (

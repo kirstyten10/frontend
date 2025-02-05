@@ -39,19 +39,8 @@ const SearchPage = () => {
             });
     };
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        if (searchTerm.trim() !== "") {
-            navigate(`/search?query=${searchTerm.trim()}`);
-        }
-    };
-
     const handleBookClick = (bookId) => {
         navigate(`/book-details/${bookId}`);
-    };
-
-    const handleBackToHome = () => {
-        navigate('/');
     };
 
     const handleAddToOwnedBooks = (book) => {
