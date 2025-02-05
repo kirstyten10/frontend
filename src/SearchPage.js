@@ -47,14 +47,12 @@ const SearchPage = () => {
         const updatedBooks = [...ownedBooks, book];
         setOwnedBooks(updatedBooks);
         localStorage.setItem('ownedBooks', JSON.stringify(updatedBooks));
-        alert(`${book.title} successfully added to your owned books`);
     };
 
     const handleRemoveFromOwnedBooks = (book) => {
         const updatedBooks = ownedBooks.filter((b) => b.book_id !== book.book_id);
         setOwnedBooks(updatedBooks);
         localStorage.setItem('ownedBooks', JSON.stringify(updatedBooks));
-        alert(`${book.title} has been removed from your owned books`);
     };
 
     const isBookOwned = (book) => {
@@ -82,6 +80,7 @@ const SearchPage = () => {
                                 />
                             )}
                             <div className="book-title">{book.title}</div>
+                            <div className="book-author">{book.authors}</div>
                             {isBookOwned(book) ? (
                                 <button onClick={() => handleRemoveFromOwnedBooks(book)}>Remove From Owned</button>
                             ) : (

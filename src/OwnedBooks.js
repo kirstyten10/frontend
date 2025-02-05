@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
 const OwnedBooks = () => {
@@ -48,6 +48,7 @@ const OwnedBooks = () => {
                                 onClick={() => handleBookClick(book.book_id)}
                             />
                             <div className="book-title">{book.title}</div>
+                            <div className="book-author">{book.authors}</div>
                             {isBookOwned(book) ? (
                                 <button onClick={() => handleRemoveFromOwnedBooks(book)}>Remove From Owned</button>
                             ) : (

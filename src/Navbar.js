@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container, Form, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Form, Navbar, Nav, } from 'react-bootstrap';
 
 const NavScrollExample = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
-    // Handle Search
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchTerm.trim() !== "") {

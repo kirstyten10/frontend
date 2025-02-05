@@ -22,7 +22,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
+  background: #e6d3a7;
 }
 
 .container {
@@ -78,9 +78,8 @@ body {
 }
 
 .book-image {
-  width: 100%;
-  max-width: 200px;
-  height: auto;
+  width: 250px;
+  height: 350px;
   cursor: pointer;
   border-radius: 8px;
   transition: transform 0.2s ease-in-out;
@@ -98,15 +97,45 @@ body {
   text-align: center;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1700px) {
   .book-container {
     grid-template-columns: repeat(4, 1fr);
   }
+
+  .book-image {
+    width: 300px;
+    height: 400px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
+  .book-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .book-image {
+    width: 250px;
+    height: 350px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+@media (max-width: 1100px) {
   .book-container {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .book-image {
+    width: 250px;
+    height: 350px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
   }
 }
 
@@ -114,4 +143,61 @@ body {
   .book-container {
     grid-template-columns: 1fr;
   }
+
+  .book-image {
+    width: 250px;
+    height: 350px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+.book-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  gap: 10px;
+}
+
+.book-item {
+  min-width: 150px;
+  text-align: center;
+}
+
+.book-title {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+button {
+  padding: 10px;
+  background-color: #3a7563;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #59a985;
+}
+
+.navbar {
+  background-color: #3a7563;
+  color: #392f2f;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: #392f2f;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
 }
