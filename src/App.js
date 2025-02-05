@@ -4,7 +4,9 @@ import HomePage from "./HomePage";
 import SearchPage from "./SearchPage";
 import BookDetails from './BookDetails';
 import OwnedBooks from './OwnedBooks';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
 
 function App() {
   return (

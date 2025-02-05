@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const SearchPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -73,19 +74,8 @@ const SearchPage = () => {
 
     return (
         <div>
+            <Navbar />
             <h1>Search Results</h1>
-
-            <form onSubmit={handleSearch}>
-                <input
-                    type="text"
-                    placeholder="Search for books..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button type="submit">Search</button>
-            </form>
-
-            <button onClick={handleBackToHome}>Back to HomePage</button>
 
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}

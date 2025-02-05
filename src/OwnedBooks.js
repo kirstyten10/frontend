@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const OwnedBooks = () => {
     const [ownedBooks, setOwnedBooks] = useState([]);
@@ -21,8 +22,8 @@ const OwnedBooks = () => {
 
     return (
         <div>
+            <Navbar />
             <h1>Your Owned Books</h1>
-            <button onClick={handleBackToHome}>Back to HomePage</button>
             <div className="book-container">
                 {ownedBooks.length > 0 ? (
                     ownedBooks.map((book) => (
