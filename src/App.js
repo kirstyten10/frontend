@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import SearchPage from "./SearchPage";
 import BookDetails from './BookDetails';
+import OwnedBooks from './OwnedBooks';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/book-details/:bookId" element={<BookDetails />} />
+          <Route path="/owned-books" element={<OwnedBooks />} />
         </Routes>
       </div>
     </Router>

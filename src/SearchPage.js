@@ -48,6 +48,19 @@ const SearchPage = () => {
         navigate('/');
     };
 
+    const handleAddToOwnedBooks = (book) => {
+        const storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
+        const existingBook = storedBooks.find((b) => b.book_id === book.book_id);
+
+        if (existingBook) {
+            alert(`${book.title} is already in your owned books`)
+        } else {
+            storedBooks.push(book);
+            localStorage.setItem('ownedBooks', JSON.stringify(storedBooks));
+            alert(`${book.title} successfully added to your owned books`)
+        }
+    };
+
     return (
         <div>
             <h1>Search Results</h1>
@@ -80,6 +93,7 @@ const SearchPage = () => {
                                 />
                             )}
                             <div className="book-title">{book.title}</div>
+                            <button onClick={() => handleAddToOwnedBooks(book)}>Add to Owned</button>
                         </div>
                     ))
                 ) : (

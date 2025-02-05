@@ -5,6 +5,7 @@ import './App.css';
 const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
+
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchTerm.trim() !== "") {
@@ -24,6 +25,7 @@ const HomePage = () => {
                 />
                 <button type="submit">Search</button>
             </form>
+            <button onClick={() => navigate('/owned-books')}>Owned Books</button>
         </div>
     );
 };
