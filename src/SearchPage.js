@@ -6,6 +6,7 @@ const SearchPage = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [ownedBooks, setOwnedBooks] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -16,6 +17,11 @@ const SearchPage = () => {
             fetchBooks(query);
         }
     }, [location.search]);
+
+    useEffect(() => {
+        const storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
+        setOwnedBooks(storedBooks);
+    }, []);
 
     const fetchBooks = (query) => {
         if (!query) return;
@@ -40,7 +46,6 @@ const SearchPage = () => {
     };
 
     const handleBookClick = (bookId) => {
-        console.log("Navigating to book with ID:", bookId);
         navigate(`/book-details/${bookId}`);
     };
 
@@ -49,16 +54,21 @@ const SearchPage = () => {
     };
 
     const handleAddToOwnedBooks = (book) => {
-        const storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
-        const existingBook = storedBooks.find((b) => b.book_id === book.book_id);
+        const updatedBooks = [...ownedBooks, book];
+        setOwnedBooks(updatedBooks);
+        localStorage.setItem('ownedBooks', JSON.stringify(updatedBooks));
+        alert(`${book.title} successfully added to your owned books`);
+    };
 
-        if (existingBook) {
-            alert(`${book.title} is already in your owned books`)
-        } else {
-            storedBooks.push(book);
-            localStorage.setItem('ownedBooks', JSON.stringify(storedBooks));
-            alert(`${book.title} successfully added to your owned books`)
-        }
+    const handleRemoveFromOwnedBooks = (book) => {
+        const updatedBooks = ownedBooks.filter((b) => b.book_id !== book.book_id);
+        setOwnedBooks(updatedBooks);
+        localStorage.setItem('ownedBooks', JSON.stringify(updatedBooks));
+        alert(`${book.title} has been removed from your owned books`);
+    };
+
+    const isBookOwned = (book) => {
+        return ownedBooks.some((b) => b.book_id === book.book_id);
     };
 
     return (
@@ -93,7 +103,12 @@ const SearchPage = () => {
                                 />
                             )}
                             <div className="book-title">{book.title}</div>
-                            <button onClick={() => handleAddToOwnedBooks(book)}>Add to Owned</button>
+                            {isBookOwned(book) ? (
+                                <button onClick={() => handleRemoveFromOwnedBooks(book)}>Remove From Owned</button>
+                            ) : (
+                                <button onClick={() => handleAddToOwnedBooks(book)}>Add to Owned</button>
+                            )}
+
                         </div>
                     ))
                 ) : (

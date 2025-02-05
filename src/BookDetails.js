@@ -5,40 +5,40 @@ const BookDetails = () => {
     const { bookId } = useParams();
     const navigate = useNavigate();
     const [book, setBook] = useState(null);
+    const [isOwned, setIsOwned] = useState(false);
 
     useEffect(() => {
         if (!bookId) return;
 
         fetch(`http://localhost:8080/books/${bookId}`)
             .then((response) => response.json())
-            .then((data) => setBook(data))
+            .then((data) => {
+                setBook(data);
+                checkIfBookIsOwned(data);
+            })
             .catch((error) => console.error('Error fetching book details:', error));
     }, [bookId]);
 
-    const handleAddToOwnedBooks = () => {
+    const checkIfBookIsOwned = (book) => {
         const storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
         const existingBook = storedBooks.find((b) => b.book_id === book.book_id);
+        setIsOwned(existingBook ? true : false);
+    };
 
-        if (existingBook) {
-            alert(`${book.title} is already in your owned books`)
-        } else {
-            storedBooks.push(book);
-            localStorage.setItem('ownedBooks', JSON.stringify(storedBooks));
-            alert(`${book.title} successfully added to your owned books`)
-        }
+    const handleAddToOwnedBooks = () => {
+        const storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
+        storedBooks.push(book);
+        localStorage.setItem('ownedBooks', JSON.stringify(storedBooks));
+        setIsOwned(true);
+        alert(`${book.title} successfully added to your owned books`);
     };
 
     const handleRemoveFromOwnedBooks = () => {
-        const storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
-        const existingBookIndex = storedBooks.findIndex((b) => b.book_id === book.book_id);
-
-        if (existingBookIndex === -1) {
-            alert(`${book.title} is not in your owned books`)
-        } else {
-            storedBooks.splice(existingBookIndex, 1);
-            localStorage.setItem('ownedBooks', JSON.stringify(storedBooks));
-            alert(`${book.title} successfully removed from your owned books`)
-        }
+        let storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
+        storedBooks = storedBooks.filter((b) => b.book_id !== book.book_id);
+        localStorage.setItem('ownedBooks', JSON.stringify(storedBooks));
+        setIsOwned(false);
+        alert(`${book.title} has been removed from your owned books`);
     };
 
     if (!book) return <div>Loading...</div>;
@@ -56,8 +56,12 @@ const BookDetails = () => {
             <button onClick={() => navigate('/search')}>Search</button>
             <button onClick={() => navigate('/')}>Home</button>
             <button onClick={() => navigate('/owned-books')}>Owned Books</button>
-            <button onClick={handleAddToOwnedBooks}>Add to Owned</button>
-            <button onClick={handleRemoveFromOwnedBooks}>Remove From Owned</button>
+
+            {!isOwned ? (
+                <button onClick={handleAddToOwnedBooks}>Add to Owned</button>
+            ) : (
+                <button onClick={handleRemoveFromOwnedBooks}>Remove From Owned</button>
+            )}
 
         </div>
     );
