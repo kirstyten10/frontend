@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const SearchPage = ({ initialQuery, navigate }) => {
-    const [searchTerm, setSearchTerm] = useState(initialQuery);
-    const [searchQuery, setSearchQuery] = useState(initialQuery);
+const SearchPage = () => {
+    const [searchTerm, setSearchTerm] = useState('');
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchBooks(searchQuery);
-    }, [searchQuery]);
+        const query = new URLSearchParams(location.search).get('query');
+        if (query) {
+            setSearchTerm(query);
+            fetchBooks(query);
+        }
+    }, [location.search]);
 
     const fetchBooks = (query) => {
         if (!query) return;
@@ -28,16 +34,24 @@ const SearchPage = ({ initialQuery, navigate }) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        setSearchQuery(searchTerm);
+        if (searchTerm.trim() !== "") {
+            navigate(`/search?query=${searchTerm.trim()}`);
+        }
     };
 
-    const handleBookClick = (book) => {
-        navigate('book-details', book);
+    const handleBookClick = (bookId) => {
+        console.log("Navigating to book with ID:", bookId);
+        navigate(`/book-details/${bookId}`);
+    };
+
+    const handleBackToHome = () => {
+        navigate('/');
     };
 
     return (
         <div>
-            <h1>Search</h1>
+            <h1>Search Results</h1>
+
             <form onSubmit={handleSearch}>
                 <input
                     type="text"
@@ -47,6 +61,8 @@ const SearchPage = ({ initialQuery, navigate }) => {
                 />
                 <button type="submit">Search</button>
             </form>
+
+            <button onClick={handleBackToHome}>Back to HomePage</button>
 
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
@@ -60,14 +76,14 @@ const SearchPage = ({ initialQuery, navigate }) => {
                                     src={book.imageUrl}
                                     alt={book.title}
                                     className="book-image"
-                                    onClick={() => handleBookClick(book)}
+                                    onClick={() => handleBookClick(book.book_id)}
                                 />
                             )}
                             <div className="book-title">{book.title}</div>
                         </div>
                     ))
                 ) : (
-                    <p>No books found</p>
+                    <p>No books found for "{searchTerm}"</p>
                 )}
             </div>
         </div>

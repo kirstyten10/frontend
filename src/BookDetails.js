@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const BookDetails = ({ book, navigate }) => {
+const BookDetails = () => {
+    const { bookId } = useParams(); // Get bookId from URL
+    const navigate = useNavigate(); // Hook for navigation
+    const [book, setBook] = useState(null);
+
+    useEffect(() => {
+        if (!bookId) return;
+
+        fetch(`http://localhost:8080/books/${bookId}`)
+            .then((response) => response.json())
+            .then((data) => setBook(data))
+            .catch((error) => console.error('Error fetching book details:', error));
+    }, [bookId]);
+
+    if (!book) return <div>Loading...</div>;
+
     return (
         <div>
             <h1>{book.title}</h1>
@@ -11,7 +27,7 @@ const BookDetails = ({ book, navigate }) => {
             <img src={book.imageUrl} alt={book.title} style={{ width: '200px' }} />
             <p><strong>Description:</strong> {book.description}</p>
 
-            <button onClick={() => navigate('search')}>Back to Search</button>
+            <button onClick={() => navigate('/search')}>Back to Search</button>
         </div>
     );
 };

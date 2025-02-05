@@ -1,27 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import SearchPage from "./SearchPage";
-import BookDetailsPage from './BookDetails';
+import BookDetails from './BookDetails';
 import './App.css';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [selectedBook, setSelectedBook] = useState(null);
-  const navigate = (path, book = null) => {
-    setCurrentPage(path);
-    if (book) {
-      setSelectedBook(book);
-    }
-  };
-
   return (
-    <div>
-      {currentPage === 'home' && <HomePage navigate={navigate} />}
-      {currentPage === 'search' && <SearchPage navigate={navigate} />}
-      {currentPage === 'book-details' && selectedBook && (
-        <BookDetailsPage book={selectedBook} navigate={navigate} />
-      )}
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/book-details/:bookId" element={<BookDetails />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
