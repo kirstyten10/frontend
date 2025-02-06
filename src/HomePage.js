@@ -35,7 +35,7 @@ const HomePage = () => {
     };
 
     const handleViewMoreBooks = () => {
-        navigate('/search');
+        navigate('/search?query=ane');
     };
 
     return (
@@ -45,55 +45,53 @@ const HomePage = () => {
                 <h1>Welcome to the Library Tracker!</h1>
                 <h2>Your Owned Books</h2>
 
-                <div className="book-scroll-container"
-                    style={{ overflowX: 'auto', display: 'flex' }}>
+                <div className="book-scroll-container">
                     {ownedBooks.slice(0, visibleBooksCount).map((book) => (
-                        <div key={book.book_id} className="book-item" style={{ minWidth: '200px', marginRight: '10px' }}>
+                        <div key={book.book_id} className="book-item">
                             <img
                                 src={book.imageUrl}
                                 alt={book.title}
-                                style={{ width: '100%' }}
-                                onClick={() => handleBookClick(book.book_id)} />
+                                className="book-image"
+                                onClick={() => handleBookClick(book.book_id)}
+                            />
                         </div>
-
                     ))}
                     {ownedBooks.length > visibleBooksCount && (
-                        <button onClick={handleViewMore} style={{ marginTop: '10px' }}>
+                        <button onClick={handleViewMore}>
                             View More
                         </button>
                     )}
                 </div>
+            </div>
 
+            <div className="try-section">
+                <h2>Why Not Try?</h2>
 
-
-                <div className="try-section">
-                    <h2>Why Not Try?</h2>
-
-                    <div className="book-scroll-container"
-                        style={{ overflowX: 'auto', display: 'flex' }}>
-                        {randomBooks.length > 0 ? (
-                            randomBooks.map((book) => (
-                                <div key={book.book_id} className="book-item" style={{ minWidth: '200px', marginRight: '10px' }}>
-                                    <img
-                                        src={book.imageUrl}
-                                        alt={book.title}
-                                        style={{ width: '100%' }}
-                                        onClick={() => handleBookClick(book.book_id)}
-                                    />
-                                </div>
-                            ))
-                        ) : (
-                            <p>No books available</p>
-                        )}
-                        {ownedBooks.length > visibleBooksCount && (
-                            <button onClick={handleViewMoreBooks} style={{ marginTop: '10px' }}>
-                                View More
-                            </button>
-                        )}
-                    </div>
+                <div className="book-scroll-container">
+                    {randomBooks.length > 0 ? (
+                        randomBooks.map((book) => (
+                            <div key={book.book_id} className="book-item">
+                                <img
+                                    src={book.imageUrl}
+                                    alt={book.title}
+                                    className="book-image"
+                                    onClick={() => handleBookClick(book.book_id)}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <p>No books available</p>
+                    )}
+                    {ownedBooks.length > visibleBooksCount && (
+                        <button onClick={handleViewMoreBooks}>
+                            View More
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
+
+
     );
 };
 
