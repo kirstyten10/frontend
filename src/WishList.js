@@ -30,6 +30,13 @@ const WishList = () => {
         setSortDirection(event.target.value);
     };
 
+    const handleRemoveFromWishlist = (book) => {
+        const updatedWishlist = wishlist.filter((b) => b.book_id !== book.book_id);
+        setWishlist(updatedWishlist);
+        localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+        alert(`${book.title} has been removed from your wishlist`);
+    };
+
     const sortBooks = (books) => {
         return books.sort((a, b) => {
             const direction = sortDirection === 'ascending' ? 1 : -1;
@@ -69,7 +76,7 @@ const WishList = () => {
                     <option value="descending">Descending</option>
                 </select>
             </div>
-            <div className="book-scroll-container">
+            <div className="book-container">
                 {wishlist.length > 0 ? (
                     wishlist.map((book) => (
                         <div key={book.book_id} className="book-item">
@@ -79,7 +86,12 @@ const WishList = () => {
                                 className="book-image"
                                 onClick={() => handleBookClick(book.book_id)}
                             />
-                            <p>{book.title}</p>
+                            <div className="book-title">{book.title}</div>
+                            <div className="book-author">{book.authors}</div>
+                            <div className="book-rating">{book.averageRating}</div>
+                            <button onClick={() => handleRemoveFromWishlist(book)}>
+                                Remove from Wishlist
+                            </button>
                         </div>
                     ))
                 ) : (

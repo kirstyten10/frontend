@@ -39,16 +39,6 @@ body {
   border-radius: 5px;
 }
 
-.button.primary {
-  background: #3a7563;
-  color: white;
-}
-
-.button.secondary {
-  background: #59a985;
-  color: white;
-}
-
 .header {
   background: #392f2f;
   color: white;
@@ -171,6 +161,7 @@ body {
 }
 
 button {
+  margin-left: 10px;
   padding: 10px;
   background-color: #3a7563;
   color: white;
@@ -225,4 +216,68 @@ button:hover {
 
 .rating-section button:hover {
   background-color: #59a985;
+}
+
+.search-page .book-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 50px;
+  padding-left: 300px;
+  padding-right: 300px;
+}
+
+.search-page .book-item {
+  display: flex;
+  border: 5px solid #392f2f;
+  padding: 20px;
+  border-radius: 5px;
+  gap: 20px;
+  background-color: #fff;
+}
+
+.search-page .book-details {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 20px;
+}
+
+.search-page .book-image {
+  width: 150px;
+  height: auto;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.search-page .book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+.search-page .book-title {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.search-page .book-author {
+  font-size: 1.2em;
+}
+
+.search-page .book-year,
+.search-page .book-rating,
+.search-page .user-rating {
+  font-size: 1.0em;
+}
+
+.search-page .book-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  width: 150px;
 }

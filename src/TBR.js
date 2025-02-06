@@ -15,7 +15,7 @@ const TBR = () => {
     }, []);
 
     useEffect(() => {
-        setSortedBooks(sortBooks(tbrBooks)); // Re-sort books whenever tbrBooks or sort options change
+        setSortedBooks(sortBooks(tbrBooks));
     }, [tbrBooks, sortOption, sortDirection]);
 
     const handleBookClick = (bookId) => {
@@ -28,6 +28,13 @@ const TBR = () => {
 
     const handleSortDirectionChange = (event) => {
         setSortDirection(event.target.value);
+    };
+
+    const handleRemoveFromTBR = (book) => {
+        const updatedTBR = tbrBooks.filter((b) => b.book_id !== book.book_id);
+        setTbrBooks(updatedTBR);
+        localStorage.setItem('tbrBooks', JSON.stringify(updatedTBR));
+        alert(`${book.title} has been removed from your wishlist`);
     };
 
     const sortBooks = (books) => {
@@ -70,7 +77,7 @@ const TBR = () => {
                 </select>
             </div>
 
-            <div className="book-scroll-container">
+            <div className="book-container">
                 {sortedBooks.length > 0 ? (
                     sortedBooks.map((book) => (
                         <div key={book.book_id} className="book-item">
@@ -80,7 +87,12 @@ const TBR = () => {
                                 className="book-image"
                                 onClick={() => handleBookClick(book.book_id)}
                             />
-                            <p className="book-title">{book.title}</p>
+                            <div className="book-title">{book.title}</div>
+                            <div className="book-author">{book.authors}</div>
+                            <div className="book-rating">{book.averageRating}</div>
+                            <button onClick={() => handleRemoveFromTBR(book)}>
+                                Remove from TBR
+                            </button>
                         </div>
                     ))
                 ) : (
