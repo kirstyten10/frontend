@@ -201,3 +201,28 @@ button:hover {
 .navbar a:hover {
   text-decoration: underline;
 }
+
+.rating-section {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.rating-section input {
+  padding: 5px;
+  margin-right: 10px;
+  width: 100px;
+  text-align: center;
+}
+
+.rating-section button {
+  padding: 5px 10px;
+  background-color: #3a7563;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.rating-section button:hover {
+  background-color: #59a985;
+}

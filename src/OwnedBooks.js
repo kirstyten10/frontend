@@ -4,6 +4,8 @@ import Navbar from './Navbar';
 
 const OwnedBooks = () => {
     const [ownedBooks, setOwnedBooks] = useState([]);
+    const [sortOption, setSortOption] = useState('popularity');
+    const [sortDirection, setSortDirection] = useState('ascending');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,10 +36,55 @@ const OwnedBooks = () => {
         return ownedBooks.some((b) => b.book_id === book.book_id);
     };
 
+    const handleSortChange = (event) => {
+        setSortOption(event.target.value);
+    };
+
+    const handleSortDirectionChange = (event) => {
+        setSortDirection(event.target.value);
+    };
+
+    const sortBooks = (books) => {
+        return books.sort((a, b) => {
+            const direction = sortDirection === 'ascending' ? 1 : -1;
+            switch (sortOption) {
+                case 'popularity':
+                    return direction * (b.ratingCount - a.ratingCount);
+                case 'averageRating':
+                    return direction * (b.averageRating - a.averageRating);
+                case 'title':
+                    return direction * a.title.localeCompare(b.title);
+                case 'publishYear':
+                    return direction * (b.publishYear - a.publishYear);
+                default:
+                    return 0;
+            }
+        });
+    };
+
     return (
         <div>
             <Navbar />
             <h1>Your Owned Books</h1>
+
+            <div>
+                <label htmlFor="sort">Sort by: </label>
+                <select id="sort" value={sortOption} onChange={handleSortChange}>
+                    <option value="popularity">Popularity</option>
+                    <option value="title">Title</option>
+                    <option value="averageRating">Average Rating</option>
+                    <option value="publishYear">Year</option>
+                </select>
+            </div>
+
+            <div>
+                <label htmlFor="sortDirection">Sort direction: </label>
+                <select id="sortDirection" value={sortDirection} onChange={handleSortDirectionChange}>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+
             <div className="book-container">
                 {ownedBooks.length > 0 ? (
                     ownedBooks.map((book) => (
@@ -49,6 +96,7 @@ const OwnedBooks = () => {
                             />
                             <div className="book-title">{book.title}</div>
                             <div className="book-author">{book.authors}</div>
+                            <div className="book-rating">{book.averageRating}</div>
                             {isBookOwned(book) ? (
                                 <button onClick={() => handleRemoveFromOwnedBooks(book)}>Remove From Owned</button>
                             ) : (
