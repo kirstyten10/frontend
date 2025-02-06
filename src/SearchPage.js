@@ -8,6 +8,8 @@ const SearchPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [ownedBooks, setOwnedBooks] = useState([]);
+    const [sortOption, setSortOption] = useState('popularity');
+    const [sortDirection, setSortDirection] = useState('ascending');
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -39,6 +41,32 @@ const SearchPage = () => {
             });
     };
 
+    const handleSortChange = (event) => {
+        setSortOption(event.target.value);
+    };
+
+    const handleSortDirectionChange = (event) => {
+        setSortDirection(event.target.value);
+    };
+
+    const sortBooks = (books) => {
+        return books.sort((a, b) => {
+            const direction = sortDirection === 'ascending' ? 1 : -1;
+            switch (sortOption) {
+                case 'popularity':
+                    return direction * (b.ratingCount - a.ratingCount);
+                case 'averageRating':
+                    return direction * (b.averageRating - a.averageRating);
+                case 'title':
+                    return direction * a.title.localeCompare(b.title);
+                case 'publishYear':
+                    return direction * (b.publishYear - a.publishYear);
+                default:
+                    return 0;
+            }
+        });
+    };
+
     const handleBookClick = (bookId) => {
         navigate(`/book-details/${bookId}`);
     };
@@ -59,6 +87,8 @@ const SearchPage = () => {
         return ownedBooks.some((b) => b.book_id === book.book_id);
     };
 
+    const sortedBooks = sortBooks(books);
+
     return (
         <div>
             <Navbar />
@@ -67,9 +97,27 @@ const SearchPage = () => {
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
 
+            <div>
+                <label htmlFor="sort">Sort by: </label>
+                <select id="sort" value={sortOption} onChange={handleSortChange}>
+                    <option value="popularity">Popularity</option>
+                    <option value="title">Title</option>
+                    <option value="averageRating">Average Rating</option>
+                    <option value="publishYear">Year</option>
+                </select>
+            </div>
+
+            <div>
+                <label htmlFor="sortDirection">Sort direction: </label>
+                <select id="sortDirection" value={sortDirection} onChange={handleSortDirectionChange}>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+
             <div className="book-container">
-                {books.length > 0 ? (
-                    books.map((book) => (
+                {sortedBooks.length > 0 ? (
+                    sortedBooks.map((book) => (
                         <div key={book.book_id} className="book-item">
                             {book.imageUrl && (
                                 <img
@@ -81,12 +129,12 @@ const SearchPage = () => {
                             )}
                             <div className="book-title">{book.title}</div>
                             <div className="book-author">{book.authors}</div>
+                            <div className="book-rating">{book.averageRating}</div>
                             {isBookOwned(book) ? (
                                 <button onClick={() => handleRemoveFromOwnedBooks(book)}>Remove From Owned</button>
                             ) : (
                                 <button onClick={() => handleAddToOwnedBooks(book)}>Add to Owned</button>
                             )}
-
                         </div>
                     ))
                 ) : (
