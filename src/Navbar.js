@@ -21,6 +21,14 @@ const NavScrollExample = () => {
         navigate('/owned-books');
     };
 
+    const handleNavigateToWishList = () => {
+        navigate('/wishlist');
+    };
+
+    const handleNavigateToTBR = () => {
+        navigate('/tbr');
+    };
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container fluid>
@@ -33,6 +41,8 @@ const NavScrollExample = () => {
                     >
                         <Nav.Link onClick={handleNavigateHome}>Home</Nav.Link>
                         <Nav.Link onClick={handleNavigateToOwnedBooks}>Owned Books</Nav.Link>
+                        <Nav.Link onClick={handleNavigateToWishList}>Wish List</Nav.Link>
+                        <Nav.Link onClick={handleNavigateToTBR}>TBR</Nav.Link>
                     </Nav>
                     <Form className="d-flex" onSubmit={handleSearch}>
                         <Form.Control

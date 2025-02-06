@@ -4,11 +4,13 @@ import Navbar from './Navbar';
 
 const BookDetails = () => {
     const { bookId } = useParams();
-    const navigate = useNavigate();
     const [book, setBook] = useState(null);
     const [isOwned, setIsOwned] = useState(false);
+    const [isInWishlist, setIsInWishlist] = useState(false);
+    const [isInTBR, setIsInTBR] = useState(false);
     const [userRating, setUserRating] = useState("");
     const [currentRating, setCurrentRating] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!bookId) return;
@@ -18,6 +20,8 @@ const BookDetails = () => {
             .then((data) => {
                 setBook(data);
                 checkIfBookIsOwned(data);
+                checkIfBookIsInWishlist(data);
+                checkIfBookIsInTBR(data);
                 const savedRating = localStorage.getItem(`rating-${bookId}`);
                 if (savedRating) {
                     setCurrentRating(savedRating);
@@ -30,6 +34,18 @@ const BookDetails = () => {
         const storedBooks = JSON.parse(localStorage.getItem('ownedBooks')) || [];
         const existingBook = storedBooks.find((b) => b.book_id === book.book_id);
         setIsOwned(existingBook ? true : false);
+    };
+
+    const checkIfBookIsInWishlist = (book) => {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const existingBook = wishlist.find((b) => b.book_id === book.book_id);
+        setIsInWishlist(existingBook ? true : false);
+    };
+
+    const checkIfBookIsInTBR = (book) => {
+        const storedTBR = JSON.parse(localStorage.getItem('tbrBooks')) || [];
+        const existingBook = storedTBR.find((b) => b.book_id === book.book_id);
+        setIsInTBR(existingBook ? true : false);
     };
 
     const handleAddToOwnedBooks = () => {
@@ -46,6 +62,38 @@ const BookDetails = () => {
         localStorage.setItem('ownedBooks', JSON.stringify(storedBooks));
         setIsOwned(false);
         alert(`${book.title} has been removed from your owned books`);
+    };
+
+    const handleAddToWishlist = () => {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        wishlist.push(book);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        setIsInWishlist(true);
+        alert(`${book.title} has been added to your wishlist.`);
+    };
+
+    const handleRemoveFromWishlist = () => {
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        wishlist = wishlist.filter((b) => b.book_id !== book.book_id);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        setIsInWishlist(false);
+        alert(`${book.title} has been removed from your wishlist.`);
+    };
+
+    const handleAddToTBR = () => {
+        const storedTBR = JSON.parse(localStorage.getItem('tbrBooks')) || [];
+        storedTBR.push(book);
+        localStorage.setItem('tbrBooks', JSON.stringify(storedTBR));
+        setIsInTBR(true);
+        alert(`${book.title} successfully added to your TBR list`);
+    };
+
+    const handleRemoveFromTBR = () => {
+        let storedTBR = JSON.parse(localStorage.getItem('tbrBooks')) || [];
+        storedTBR = storedTBR.filter((b) => b.book_id !== book.book_id);
+        localStorage.setItem('tbrBooks', JSON.stringify(storedTBR));
+        setIsInTBR(false);
+        alert(`${book.title} has been removed from your TBR list`);
     };
 
     const handleRatingChange = (event) => {
@@ -100,6 +148,18 @@ const BookDetails = () => {
                 <button onClick={handleAddToOwnedBooks}>Add to Owned</button>
             ) : (
                 <button onClick={handleRemoveFromOwnedBooks}>Remove From Owned</button>
+            )}
+
+            {!isInWishlist ? (
+                <button onClick={handleAddToWishlist}>Add to Wishlist</button>
+            ) : (
+                <button onClick={handleRemoveFromWishlist}>Remove from Wishlist</button>
+            )}
+
+            {!isInTBR ? (
+                <button onClick={handleAddToTBR}>Add to TBR</button>
+            ) : (
+                <button onClick={handleRemoveFromTBR}>Remove from TBR</button>
             )}
         </div>
     );
