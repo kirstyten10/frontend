@@ -1,4 +1,14 @@
-# Getting Started with Create React App
+# Home Library Tracker App
+This project employs a Spring Boot backend and a React frontend. It is designed to read and process book data from the csv file books.csv, save the data into a H2 database, and provide functionality to search and store books.
+
+## Features
+**Home Page:** Home page displaying scrollable lists of Owned, Wishlist, and TBR books and recommendations
+**Search Books:** Users can search for books by title, author, and isbn
+**Store Books:** Users can store books on specific bookshelves named Owned Books, Wishlist, and TBR
+**Rate Books:** Users can store a rating for books from 1-5 
+**Book Details:** Users can view more details of a book containing information such as language, publish year, and average rating
+
+## Project Setup
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -68,3 +78,25 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Backend
+Follow homelibrarytracker backend README for full installation
+
+## Screenshots
+### Home Page
+![](src/images/homepage.png)
+
+### Book Details
+![](src/images/bookdetails.png)
+
+### Owned Books
+![](src/images/ownedbooks.png)
+
+### Wishlist
+![](src/images/wishlist.png)
+
+### TBR
+![](src/images/tbr.png)
+
+### Search Results
+![](src/images/searchpage.png)
